@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body onload="fake()">
+<h2>Faking Textarea</h2>
+<form>
+    <label>
+        <textarea cols="30" rows="5" id="txt"></textarea>
+    </label>
+</form>
+<script>
+    let array = [];
+    let strArr = " Tôi Là Một Thằng Ngốc!"
+    array = strArr.split('');
+    let str = "";
+    console.log('arr = ', array)
+    function fake() {
+        let text = document.getElementById("txt").value;
+        for (let i = 1; i <=text.length; i++) {
+            str = str + array[i];
+            if (i == 22) {
+                str = "";
+            }
+        }
+        document.getElementById("txt").value = str;
+        str = "";
+        setTimeout(fake, 1);
+    }
+</script>
+</body>
+</html>
