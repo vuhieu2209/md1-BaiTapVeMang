@@ -8,27 +8,18 @@
 <script>
     // Tạo mảng số nguyên gồm 10 phần tử
     let arr = [5, 7, -9, 12, 15, -30, 35, 40, 45, 50];
-
-    // Biến đếm có nhiệm vụ đếm số lượng số nguyên lớn hơn hoặc bằng 10
     let count = 0;
-
-    // Duyệt qua từng phần tử trong mảng
     arr.forEach(function(element) {
-        // Kiểm tra nếu phần tử lớn hơn hoặc bằng 10, tăng biến đếm lên 1
         if (element >= 10) {
             count++;
         }
     });
-
-    // Hiển thị kết quả
     console.log("Có " + count + " số nguyên lớn hơn hoặc bằng 10 trong mảng.");
 
 
     // Tìm phần tử lớn nhất trong mảng và vị trí của phần tử đó
     let maxNum = Math.max(...arr);
     let maxIndex = arr.indexOf(maxNum);
-
-    // Hiển thị kết quả
     console.log("Phần tử lớn nhất trong mảng là: " + maxNum);
     console.log("Vị trí của phần tử lớn nhất là: " + maxIndex);
 
@@ -38,8 +29,6 @@
         sum += arr[i];
     }
     let average = sum / arr.length;
-
-    // In ra giá trị trung bình
     console.log("Giá trị trung bình của các phần tử trong mảng là: " + average);
 
     // Đảo ngược các phần tử trong mảng
@@ -52,8 +41,6 @@
             count2++;
         }
     }
-
-    // In ra số phần tử là số nguyên âm
     console.log("Số phần tử là số nguyên âm trong mảng là: " + count2);
 
     // Nhập giá trị V từ người dùng
@@ -67,8 +54,6 @@
             break;
         }
     }
-
-    // Hiển thị kết quả
     if (isInArray) {
         console.log("V is in the array.");
     } else {

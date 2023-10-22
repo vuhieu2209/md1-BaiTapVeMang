@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text" id="lang">
+<select id="input_lang" onchange="dictionary()">
+    <option value="vietnamese">Tiếng việt</option>
+    <option value="english">tiếng anh</option>
+    <option value="tiengNhat">Tiếng Nhật</option>
+</select>
+&harr;
+<select id="output_lang" onchange="dictionary()">
+    <option value="vietnamese">Tiếng việt</option>
+    <option value="english">tiếng anh</option>
+    <option value="tiengNhat">Tiếng Nhật</option>
+</select>
+<button onclick="dictionary()">click</button>
+<p id="result"></p>
+<script>
+    let english = ['red', 'blue', 'yellow', 'white'];
+    let vietnamese = ['đỏ', 'xanh', 'vàng', 'trắng'];
+    let japanese = ['Aka', 'Midori', 'Kiiro', 'Shiro'];
+    let map = new Map();
+    map.set('vietnamese', vietnamese);
+    map.set('english', english);
+    map.set('tiengNhat', japanese);
+    function dictionary() {
+        let input = document.getElementById('lang').value;
+        console.log('input -->', input)
+        let input_lang = document.getElementById('input_lang').value;
+        let output_lang = document.getElementById('output_lang').value;
+
+        chooseLanguage(input, map.get(input_lang), map.get(output_lang));
+    }
+
+    function getIndex(input, arr) {
+        for (let i = 0; i < arr.length; i++) {
+            if (input.toLowerCase() === arr[i].toLowerCase()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function chooseLanguage(input, arrInput, arrOutPut) {
+        for (let i = 0; i < arrOutPut.length; i++) {
+            if (getIndex(input, arrInput) === i) {
+                document.getElementById('result').innerText = arrOutPut[i];
+                return;
+            } else {
+                document.getElementById('result').innerText = 'Not Found!';
+            }
+        }
+
+
+
+    // function dictionary() {
+    //     let inputLanguage = document.getElementById('input_language').value;
+    //     let outputLanguage = document.getElementById('output_language').value;
+    //
+    //     let input = document.getElementById('english').value;
+    //
+    //     if (inputLanguage == "english" && outputLanguage == 'vietnamese') {
+    //
+    //
+    //         for (let i = 0; i < english.length; i++) {
+    //             if (inputLanguage === english[i]) {
+    //
+    //                 document.getElementById('result').innerText = vietnamese[i]
+    //                 break;
+    //             }
+    //         }
+    //
+    //     } else if (inputLanguage == 'vietnamese' && outputLanguage == 'english') {
+    //         for (let i = 0; i < vietnamese.length; i++) {
+    //
+    //             if (input === vietnamese[i]) {
+    //                 document.getElementById('result').innerText = english[i]
+    //                 break;
+    //             } else {
+    //
+    //                 document.getElementById('result').innerText = 'Không thấy kêt quả'
+    //             }
+    //         }
+    //     } else if (inputLanguage == "english" && outputLanguage == 'tiengNhat') {
+    //         for (let i = 0; i < english.length; i++) {
+    //
+    //             if (input === english[i]) {
+    //                 document.getElementById('result').innerText = japanese[i]
+    //                 break;
+    //             } else {
+    //
+    //                 document.getElementById('result').innerText = 'Không thấy kêt quả'
+    //             }
+    //         }
+    //     }
+        // let input = document.getElementById('english').value;
+        // for (let i = 0; i < english.length; i++) {
+        //     if (input === english[i]) {
+        //         document.getElementById('result').innerText = vietnamese[i]
+        //     } else {
+        //         document.getElementById('result').innerText = 'Không thấy kêt quả'
+        //     }
+        // }
+
+    }
+
+</script>
+</body>
+</html>
