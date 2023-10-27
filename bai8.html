@@ -31,11 +31,52 @@
     <script src="Students.js"></script>
 </head>
 <body style="text-align: center">
+<!--Đầu navbar-->
+<nav class="navbar navbar-expand-lg navbar-light  " style="background-color: aqua">
+    <a class="navbar-brand" href="#">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a id="Register" class="nav-link" href="register.html">Register <span
+                        class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a id="login" class="nav-link" href="login.html">Login</a>
+            </li>
+            <li id="dropdown" class="nav-item dropdown" >
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a onclick="logOut()" class="dropdown-item" href="#" style="color: red">log Out</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<!--Cuối navbar-->
 <div class="input-group mb-3">
     <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1">@</span>
     </div>
-    <input id="searchStudent" oninput="searchStudent()" type="text" class="form-control" placeholder="Username" aria-label="Username"
+    <input id="searchStudent" oninput="searchStudent()" type="text" class="form-control" placeholder="Username"
+           aria-label="Username"
            aria-describedby="basic-addon1">
 </div>
 
@@ -83,55 +124,60 @@
     </thead>
     <tbody id="ps-table"></tbody>
 </table>
-<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>-->
-<!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--    <div class="modal-dialog">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="modal-header">-->
-<!--                <h5 class="modal-title" id="exampleModalLabel">New message</h5>-->
-<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                    <span aria-hidden="true">&times;</span>-->
-<!--                </button>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
 
-<!--                    <div class="form-group">-->
-<!--                        <label class="col-form-label">Name</label>-->
-<!--                        <input type="text" class="form-control" id="name-update">-->
-<!--                    </div>-->
-<!--                <div class="form-group">-->
-<!--                    <label class="col-form-label">Age:</label>-->
-<!--                    <input type="number" class="form-control" id="age-update">-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                    <label class="col-form-label">Address</label>-->
-<!--                    <input type="text" class="form-control" id="address-update">-->
-<!--                </div>-->
-
-<!--            </div>-->
-<!--            <div class="modal-footer">-->
-<!--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-<!--                <button type="button" class="btn btn-primary">Send message</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 <script>
-    let hieu = new Students(1, 'Hiếu', 22, 'Hà Nội');
-    let hoang = new Students(2, 'Hoàng', 22, 'Hà Nội');
-    let long = new Students(3, 'Long', 22, 'Đà Nẵng');
-    let students = [];
+
+    let name = localStorage.getItem('key-name');
+    if (name !== null) {
+        document.getElementById('navbarDropdown').innerText = name;
+        document.getElementById('Register').innerText = '';
+        document.getElementById('login').innerText = '';
+
+    }
+
+
+    function myFunction() {
+
+        document.getElementById('Register').innerText = 'Register';
+        document.getElementById('login').innerText = 'Login';
+        document.getElementById('dropdown').style.pointerEvents = 'none';
+    }
+
+    window.onload = function() {
+        var reloading = sessionStorage.getItem("reloading");
+        if (reloading) {
+            sessionStorage.removeItem("reloading");
+            myFunction();
+        }
+    }
+    function logOut() {
+        sessionStorage.setItem("reloading", "true");
+        localStorage.removeItem('key-name');
+        window.location.reload();
+    }
+
+    let students = JSON.parse(localStorage.getItem('students'));
+    if (students == null) {
+        students = [];
+    }
     let results = [];
     let idUpdate = 0;
     let idDelete = 0;
     let checkValidate = false;
-    students.push(hieu, hoang, long)
+    // students.push(hieu, hoang, long)
     let newName
     let newAge
     let newAddress
 
     function createStudent() {
-        let newId = students[students.length - 1].id + 1;
+        console.log('students ===', students.length)
+        let newId = 0;
+        if (students.length === 0) {
+            newId = 1;
+        } else {
+            newId = students[students.length - 1].id + 1;
+        }
+
         newName = document.getElementById('name').value;
         newAge = document.getElementById('age').value;
         newAddress = document.getElementById('address').value;
@@ -142,8 +188,10 @@
         //     alert("The name is required! Please try again!");
         //     return;
         // }
-        if (checkValidate){
+        if (checkValidate) {
             students.push(newStudent);
+            localStorage.removeItem('students');
+            localStorage.setItem('students', JSON.stringify(students))
             showListStudent();
         }
 
@@ -189,6 +237,7 @@
     }
 
     function showListStudent() {
+
         let colorTr = '';
         let drawTable = '';
         for (let i = 0; i < students.length; i++) {
@@ -280,6 +329,7 @@
 
             }
         }
+
     }
 
     function showDelete(id) {
@@ -288,12 +338,7 @@
         for (let i = 0; i < students.length; i++) {
             if (id === students[i].id) {
                 document.getElementById('name-delete').innerText = students[i].name;
-                // document.getElementById('age-update').value = students[i].age;
-                // document.getElementById('address-update').value = students[i].address;
-                // console.log('giá trị i = ', i)
-                // console.log('giá trị name = ', students[i].name)
-                // console.log('giá trị age = ', students[i].age)
-                // console.log('giá trị address = ', students[i].address)
+
 
             }
         }
@@ -310,12 +355,13 @@
                 console.log('Sau khi uppdate', students[i])
             }
         }
+        localStorage.setItem('students', JSON.stringify(students));
         showListStudent()
+
     }
 
     function deleteStudent() {
-        // idUpdate = id ;
-        // console.log('id muốn xóa ==', id);
+
 
         for (let i = 0; i < students.length; i++) {
             console.log('Id uppdate==========', idDelete)
@@ -325,20 +371,18 @@
                 console.log('i Sau khi xóa', i);
             }
         }
-
+        localStorage.removeItem('students');
+        localStorage.setItem('students', JSON.stringify(students))
+        console.log('getItem===', localStorage.getItem('students'))
         showListStudent();
 
     }
 
     function showListSearchStudent() {
-
         let colorTr = '';
         let drawTable = '';
         for (let i = 0; i < results.length; i++) {
-            // drawTable += '<tr>' +
-            //     '<td>' + (i+1) + '</td>' +
-            //     '<td>' + students[i] + '</td>' +
-            //     '</tr>'
+
 
             if (i % 2 == 0) {
                 colorTr = 'table-primary'
@@ -419,13 +463,13 @@
             for (let i = 0; i < students.length; i++) {
 
                 console.log('======', students[i].address.toLowerCase().search(keyword.toLowerCase()))
-                console.log( '++++++', students[i].name.toLowerCase().search(keyword.toLowerCase()))
+                console.log('++++++', students[i].name.toLowerCase().search(keyword.toLowerCase()))
                 if (students[i].name.toLowerCase().search(keyword.toLowerCase()) != -1 ||
                     students[i].age == keyword ||
                     students[i].address.toLowerCase().search(keyword.toLowerCase()) != -1) {
                     results.push(students[i]);
                     console.log('students search ====', students[i])
-                    console.log( 'iiiii', i)
+                    console.log('iiiii', i)
                 }
 
             }
@@ -435,22 +479,47 @@
 
 
     //
+
     var exampleModal = document.getElementById('exampleModal')
-    exampleModal.addEventListener('show.bs.modal', function (event) {
-        // Button that triggered the modal
-        var button = event.relatedTarget
-        // Extract info from data-bs-* attributes
-        var recipient = button.getAttribute('data-bs-whatever')
-        // If necessary, you could initiate an AJAX request here
-        // and then do the updating in a callback.
-        //
-        // Update the modal's content.
-        var modalTitle = exampleModal.querySelector('.modal-title')
-        var modalBodyInput = exampleModal.querySelector('.modal-body input')
-        console.log('check data modal ====> ', recipient.name)
-        modalTitle.textContent = 'Update Student: ' + recipient
-        modalBodyInput.value = recipient
-    })
+    if (exampleModal !== null) {
+        exampleModal.addEventListener('show.bs.modal', function (event) {
+            console.log('exampleModal', exampleModal)
+            // Button that triggered the modal
+            var button = event.relatedTarget
+            // Extract info from data-bs-* attributes
+            var recipient = button.getAttribute('data-bs-whatever')
+            // If necessary, you could initiate an AJAX request here
+            // and then do the updating in a callback.
+            //
+            // Update the modal's content.
+            var modalTitle = exampleModal.querySelector('.modal-title')
+            var modalBodyInput = exampleModal.querySelector('.modal-body input')
+            console.log('check data modal ====> ', recipient.name)
+            modalTitle.textContent = 'Update Student: ' + recipient
+            modalBodyInput.value = recipient
+        })
+    }
+    var staticBackdrop = document.getElementById('staticBackdrop')
+    if (staticBackdrop !== null) {
+        staticBackdrop.addEventListener('show.bs.modal', function (event) {
+            console.log('staticBackdrop', staticBackdrop)
+            // Button that triggered the modal
+            var button = event.relatedTarget
+            // Extract info from data-bs-* attributes
+            var recipient = button.getAttribute('data-bs-whatever')
+            // If necessary, you could initiate an AJAX request here
+            // and then do the updating in a callback.
+            //
+            // Update the modal's content.
+            var modalTitle = staticBackdrop.querySelector('.modal-title')
+            var modalBodyInput = staticBackdrop.querySelector('.modal-body input')
+            console.log('check data modal ====> ', recipient.name)
+            modalTitle.textContent = 'Update Student: ' + recipient
+            modalBodyInput.value = recipient
+        })
+    }
+    console.log('exampleModal', exampleModal)
+
 
 </script>
 
